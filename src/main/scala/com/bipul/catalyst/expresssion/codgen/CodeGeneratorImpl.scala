@@ -23,6 +23,10 @@ object CodeGeneratorImpl {
 
     classBodyEvaluator.setDefaultImports(Array(classOf[InternalRow].getName))
 
+    println("Generated Equivalent Java Code ::")
+
+    println(generatedExpressionCode.code)
+
     val codeString = "public Object execute(InternalRow i) {" +
                       generatedExpressionCode.code +
                        " return "+ generatedExpressionCode.value +"; }"

@@ -8,18 +8,22 @@ import org.apache.spark.sql.types.DoubleType
 /**
   * Created by bipulk on 18/08/16.
   */
-object ExpressionCodeGenExample {
+object ExpressionCodeGen {
 
 
   def main(args: Array[String]) {
 
-    val mulExpression = Add(Multiply(BoundReference(0,DoubleType,true),Literal(2.0)), BoundReference(1,DoubleType,true))
+    val expression = Add(Multiply(BoundReference(0,DoubleType,true),Literal(2.0)), BoundReference(1,DoubleType,true))
 
     val unsafeRow = InternalRow(1.0D, 3.0D)
 
-    println(mulExpression.eval(unsafeRow))
+    println("Expression Tree ::")
 
-    println(CodeGeneratorImpl.getExecutor(mulExpression).execute(unsafeRow))
+    println(expression.treeString)
+
+    println("########Result with fallback eval ::" + expression.eval(unsafeRow))
+
+    println("########Result with catalyst codegen :: " + CodeGeneratorImpl.getExecutor(expression).execute(unsafeRow))
 
   }
 
