@@ -6,9 +6,7 @@ import org.apache.spark.sql.catalyst.expressions.Expression
 import org.apache.spark.sql.catalyst.expressions.codegen.{CodeGenContext, GeneratedExpressionCode}
 import org.codehaus.janino.ClassBodyEvaluator
 
-/**
-  * Created by bipulk on 18/8/16.
-  */
+
 object CodeGeneratorImpl {
 
   def getExecutor(expression: Expression): CodeGenerator = {
@@ -23,13 +21,13 @@ object CodeGeneratorImpl {
 
     classBodyEvaluator.setDefaultImports(Array(classOf[InternalRow].getName))
 
-    println("Generated Equivalent Java Code ::")
-
-    println(generatedExpressionCode.code)
-
     val codeString = "public Object execute(InternalRow i) {" +
                       generatedExpressionCode.code +
                        " return "+ generatedExpressionCode.value +"; }"
+
+    println("Generated Equivalent Java Code ::")
+
+    println(codeString)
 
     classBodyEvaluator.cook(codeString)
 
